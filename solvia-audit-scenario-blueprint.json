@@ -1,0 +1,702 @@
+{
+    "name": "SOLVIA System",
+    "flow": [
+        {
+            "id": 10,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 0,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "Free Audit - Production"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 11,
+            "module": "google-sheets:addRow",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 0
+            },
+            "mapper": {
+                "from": "drive",
+                "mode": "select",
+                "values": {
+                    "0": "{{10.name}}",
+                    "1": "{{10.business_name}}",
+                    "2": "{{10.email}}",
+                    "3": "{{10.phone}}",
+                    "4": "{{10.website}}",
+                    "5": "{{10.business_description}}",
+                    "6": "{{10.time_consuming_process}}",
+                    "7": "{{10.desired_improvement}}",
+                    "8": "{{10.business_type}}",
+                    "9": "New",
+                    "12": "{{10.submitted_at}}"
+                },
+                "sheetId": "Sheet1",
+                "spreadsheetId": "/YOUR_SPREADSHEET_ID",
+                "includesHeaders": true,
+                "insertDataOption": "INSERT_ROWS",
+                "useColumnHeaders": false,
+                "valueInputOption": "USER_ENTERED",
+                "insertUnformatted": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "My Drive"
+                        },
+                        "mode": {
+                            "label": "Search by path"
+                        },
+                        "sheetId": {
+                            "label": "Sheet1"
+                        },
+                        "spreadsheetId": {
+                            "path": [
+                                "FREE AUDIT "
+                            ]
+                        },
+                        "includesHeaders": {
+                            "label": "Yes"
+                        },
+                        "insertDataOption": {
+                            "mode": "chose",
+                            "label": "Insert rows"
+                        },
+                        "useColumnHeaders": {
+                            "label": "No"
+                        },
+                        "valueInputOption": {
+                            "mode": "chose",
+                            "label": "User entered"
+                        },
+                        "insertUnformatted": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "Molesh's Google connection (YOUR_EMAIL@example.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "mode",
+                        "type": "select",
+                        "label": "Search Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "select",
+                                "fromAll",
+                                "map"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "insertUnformatted",
+                        "type": "boolean",
+                        "label": "Unformatted",
+                        "required": true
+                    },
+                    {
+                        "name": "valueInputOption",
+                        "type": "select",
+                        "label": "Value input option",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "USER_ENTERED",
+                                "RAW"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "insertDataOption",
+                        "type": "select",
+                        "label": "Insert data option",
+                        "validate": {
+                            "enum": [
+                                "INSERT_ROWS",
+                                "OVERWRITE"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "spreadsheetId",
+                        "type": "file",
+                        "label": "Spreadsheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "includesHeaders",
+                        "type": "select",
+                        "label": "Table contains headers",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                true,
+                                false
+                            ]
+                        }
+                    },
+                    {
+                        "name": "useColumnHeaders",
+                        "type": "select",
+                        "label": "Use column headers as IDs of the columns",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                true,
+                                false
+                            ]
+                        }
+                    },
+                    {
+                        "name": "values",
+                        "spec": [
+                            {
+                                "name": "0",
+                                "type": "text",
+                                "label": "Name (A)"
+                            },
+                            {
+                                "name": "1",
+                                "type": "text",
+                                "label": "Business name (B)"
+                            },
+                            {
+                                "name": "2",
+                                "type": "text",
+                                "label": "Email (C)"
+                            },
+                            {
+                                "name": "3",
+                                "type": "text",
+                                "label": "Phone (D)"
+                            },
+                            {
+                                "name": "4",
+                                "type": "text",
+                                "label": "Website (E)"
+                            },
+                            {
+                                "name": "5",
+                                "type": "text",
+                                "label": "What does your business do? (F)"
+                            },
+                            {
+                                "name": "6",
+                                "type": "text",
+                                "label": "What process is taking too much time? (G)"
+                            },
+                            {
+                                "name": "7",
+                                "type": "text",
+                                "label": "What would you most like to improve? (H)"
+                            },
+                            {
+                                "name": "8",
+                                "type": "text",
+                                "label": "Service Selected (I)"
+                            },
+                            {
+                                "name": "9",
+                                "type": "text",
+                                "label": "Audit Status (J)"
+                            },
+                            {
+                                "name": "10",
+                                "type": "text",
+                                "label": "AI Audit (K)"
+                            },
+                            {
+                                "name": "11",
+                                "type": "text",
+                                "label": "Client Snapshot (L)"
+                            },
+                            {
+                                "name": "12",
+                                "type": "text",
+                                "label": "Processed At (M)"
+                            },
+                            {
+                                "name": "13",
+                                "type": "text",
+                                "label": "(N)"
+                            },
+                            {
+                                "name": "14",
+                                "type": "text",
+                                "label": "(O)"
+                            },
+                            {
+                                "name": "15",
+                                "type": "text",
+                                "label": "(P)"
+                            },
+                            {
+                                "name": "16",
+                                "type": "text",
+                                "label": "(Q)"
+                            },
+                            {
+                                "name": "17",
+                                "type": "text",
+                                "label": "(R)"
+                            },
+                            {
+                                "name": "18",
+                                "type": "text",
+                                "label": "(S)"
+                            },
+                            {
+                                "name": "19",
+                                "type": "text",
+                                "label": "(T)"
+                            },
+                            {
+                                "name": "20",
+                                "type": "text",
+                                "label": "(U)"
+                            },
+                            {
+                                "name": "21",
+                                "type": "text",
+                                "label": "(V)"
+                            },
+                            {
+                                "name": "22",
+                                "type": "text",
+                                "label": "(W)"
+                            },
+                            {
+                                "name": "23",
+                                "type": "text",
+                                "label": "(X)"
+                            },
+                            {
+                                "name": "24",
+                                "type": "text",
+                                "label": "(Y)"
+                            },
+                            {
+                                "name": "25",
+                                "type": "text",
+                                "label": "(Z)"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Values in columns",
+                        "metadata": [
+                            [
+                                [
+                                    "Name",
+                                    "Business name",
+                                    "Email",
+                                    "Phone",
+                                    "Website",
+                                    "What does your business do?",
+                                    "What process is taking too much time?",
+                                    "What would you most like to improve?",
+                                    "Service Selected",
+                                    "Audit Status",
+                                    "AI Audit",
+                                    "Client Snapshot",
+                                    "Processed At"
+                                ]
+                            ]
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 12,
+            "module": "anthropic-claude:simpleTextPrompt",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "model": "claude-haiku-4-5",
+                "max_tokens": "1000",
+                "textPrompt": "You are an AI Business Audit and Opportunity Intelligence Assistant working for an AI Automation & Digital Systems Specialist.\r\n\r\nYour analysis is INTERNAL and is used to prepare the specialist for a discovery conversation.\r\n\r\nThe goal is NOT to diagnose everything from limited information.\r\n\r\nThe goal is to identify:\r\n\r\n1. What the client told us\r\n2. What can reasonably be understood from their answers\r\n3. What remains unknown\r\n4. The main opportunity worth investigating\r\n5. Potential opportunities worth exploring\r\n6. Questions to ask during discovery\r\n7. Possible paid service directions if discovery confirms the opportunity\r\n\r\nIMPORTANT RULES\r\n\r\n* Use ONLY information provided in the enquiry.\r\n* Do not invent facts, statistics, problems, tools, processes or business performance.\r\n* Do not turn assumptions into confirmed problems.\r\n* Clearly distinguish confirmed information from potential opportunities.\r\n* If information is missing, say \"Not provided.\"\r\n* Do not criticise the business.\r\n* Do not guarantee revenue, savings or financial results.\r\n* Do not provide technical implementation instructions.\r\n* Do not provide automation architecture, software stacks, integrations or detailed workflows.\r\n* Do not explain exactly how a paid solution would be built.\r\n* Avoid generic industry assumptions unless clearly labelled as an area to investigate.\r\n* Keep the analysis concise.\r\n* The enquiry contains only three business questions, so do not assume answers to questions that were not asked.\r\n\r\n==================================================\r\n\r\n1. CLIENT REQUEST\r\n   ==================================================\r\n\r\nSummarise:\r\n\r\n* Service selected\r\n* Problem or process stated\r\n* Desired improvement\r\n\r\nMaximum 3 bullets.\r\n\r\n==================================================\r\n2. WHAT WE KNOW\r\n===============\r\n\r\nProvide:\r\n\r\nBusiness:\r\nWebsite:\r\nBusiness Type / Description:\r\nProcess Taking Too Much Time:\r\nDesired Improvement:\r\nService Selected:\r\n\r\nUse \"Not provided\" where necessary.\r\n\r\n==================================================\r\n3. CONFIRMED OBSERVATIONS\r\n=========================\r\n\r\nProvide exactly 3 short observations.\r\n\r\nOnly state what can reasonably be concluded from the information supplied.\r\n\r\nDo not infer specific operational problems that the client did not state.\r\n\r\n==================================================\r\n4. KEY INFORMATION GAPS\r\n=======================\r\n\r\nIdentify the 5 most important missing pieces of information needed to understand the opportunity.\r\n\r\nUse:\r\n\r\n**Gap:** What is unknown.\r\n**Why:** Why it matters.\r\n\r\nKeep each gap to a maximum of 2 sentences.\r\n\r\n==================================================\r\n5. PRIMARY OPPORTUNITY\r\n======================\r\n\r\nIdentify the single most important business opportunity currently supported by the enquiry.\r\n\r\nIf it cannot yet be confirmed, begin with:\r\n\r\n\"Opportunity to investigate:\"\r\n\r\nExplain in a maximum of 3 sentences.\r\n\r\n==================================================\r\n6. POTENTIAL OPPORTUNITIES TO EXPLORE\r\n=====================================\r\n\r\nIdentify EXACTLY 4 potential opportunities.\r\n\r\nThese are possibilities, NOT confirmed problems.\r\n\r\nFor each use ONLY:\r\n\r\n**Opportunity:** Name\r\n**Investigate:** One sentence explaining what to find out.\r\n**Possible Service:** Relevant service category.\r\n\r\nOnly use relevant service categories such as:\r\n\r\n* Website optimisation\r\n* Conversion improvement\r\n* Lead capture\r\n* Enquiry management\r\n* Follow-up systems\r\n* Customer journey improvement\r\n* Digital systems improvement\r\n* Business process automation\r\n* AI-assisted workflows\r\n* Reporting and visibility\r\n* Customer communication systems\r\n\r\n==================================================\r\n7. DISCOVERY QUESTIONS\r\n======================\r\n\r\nProvide EXACTLY 5 questions.\r\n\r\nThe questions must uncover:\r\n\r\n1. What happens currently\r\n2. Where the bottleneck occurs\r\n3. Who handles it\r\n4. What impact it has\r\n5. What the client wants to change\r\n\r\nMake the questions specific to the client's actual enquiry.\r\n\r\nDo not assume the answers.\r\n\r\nDo not provide explanations after the questions.\r\n\r\n==================================================\r\n8. RECOMMENDATION\r\n=================\r\n\r\nGive the specialist a concise recommendation.\r\n\r\nState:\r\n\r\n* What to investigate first\r\n* What should not be recommended yet\r\n* What must be confirmed before proposing a paid solution\r\n\r\nMaximum 5 sentences.\r\n\r\n==================================================\r\n9. PAID SOLUTION DIRECTION\r\n==========================\r\n\r\nThis section is PRIVATE.\r\n\r\nIdentify a maximum of 3 possible paid service directions.\r\n\r\nUse conditional language.\r\n\r\nFormat:\r\n\r\n**Possible Service:**\r\n**Only if discovery confirms:**\r\n\r\nDo not provide pricing, technical details, software or implementation instructions.\r\n\r\n==================================================\r\n10. CLIENT-READY SNAPSHOT\r\n=========================\r\n\r\nCreate a short version that can be manually reviewed and sent to the client.\r\n\r\nDo NOT include:\r\n\r\n* Internal analysis\r\n* Information gaps\r\n* Discovery questions\r\n* Potential paid services\r\n* Technical details\r\n* Full diagnosis\r\n* Detailed strategy\r\n\r\nUse EXACTLY these headings:\r\n\r\nWHAT I NOTICED:\r\n\r\n2 sentences.\r\n\r\nTHE OPPORTUNITY:\r\n\r\n2 sentences.\r\n\r\nWHY IT MATTERS:\r\n\r\n2 sentences.\r\n\r\nMY RECOMMENDATION:\r\n\r\n2 sentences.\r\n\r\nNEXT STEP:\r\n\r\n1 sentence.\r\n\r\nThe client should feel:\r\n\r\n\"This person understands what I am trying to achieve and I want to discuss it further.\"\r\n\r\nDo not reveal the complete diagnosis or solution.\r\n\r\n==================================================\r\nENQUIRY INFORMATION\r\n===================\r\n\r\nName:\r\n{{10.name}}\n\r\nBusiness Name:\r\n{{10.business_name}}\r\n\r\nEmail:\r\n{{10.email}}\r\n\r\nPhone:\r\n{{10.phone}}\r\n\r\nWebsite:\r\n{{10.website}}\r\n\r\nWhat does the business do?\r\n{{10.business_description}}\r\n\r\nWhat process is taking too much time?\r\n{{10.time_consuming_process}}\r\n\r\nWhat would they most like to improve?\r\n{{10.desired_improvement}}\r\n\r\nService selected:\r\n{{10.business_type}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "model": {
+                            "label": "Claude Haiku 4.5The quickest option, perfect for simple questions and instant, straightforward answers"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "claude-haiku-4-5",
+                                "claude-fable-5-1",
+                                "claude-opus-5",
+                                "claude-fable-5",
+                                "claude-sonnet-5",
+                                "claude-opus-4-8",
+                                "claude-opus-4-7",
+                                "claude-sonnet-4-6",
+                                "claude-opus-4-6",
+                                "claude-sonnet-4-5",
+                                "claude-opus-4-5"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "textPrompt",
+                        "type": "text",
+                        "label": "Text Prompt",
+                        "required": true
+                    },
+                    {
+                        "name": "max_tokens",
+                        "type": "uinteger",
+                        "label": "Max Tokens",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 13,
+            "module": "google-email:sendAnEmail",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 0
+            },
+            "mapper": {
+                "to": [
+                    "YOUR_EMAIL@example.com"
+                ],
+                "subject": "NEW FREE BUSINESS AUDIT — {{10.name}}",
+                "bodyType": "collection",
+                "contents": [
+                    {
+                        "text": "NEW FREE BUSINESS AUDIT\n\nHi there,\n\nA new Free Business Systems Audit has been submitted through the SOLVIA SYSTEMS website.\n\n━━━━━━━━━━━━━━━━━━━━━━\nCLIENT DETAILS\n━━━━━━━━━━━━━━━━━━━━━━\n\nName: {{10.name}}\nBusiness: {{10.business_name}}\nEmail: {{10.email}}\nPhone: {{10.phone}}\nWebsite: {{10.website}}\n\n━━━━━━━━━━━━━━━━━━━━━━\nAUDIT RESPONSES\n━━━━━━━━━━━━━━━━━━━━━━\n\nBusiness Type:\n{{10.business_type}}\n\nWhere enquiries come from:\n{{10.enquiry_source}}\n\nWhat takes the most time:\n{{10.time_consuming_process}}\n\nWhere customer information is stored:\n{{10.customer_information_location}}\n\nWhat happens when someone enquires:\n{{10.enquiry_process}}\n\nWhat they would most like to improve:\n{{10.desired_improvement}}\n\nRepetitive admin per week:\n{{10.admin_time}}\n\n━━━━━━━━━━━━━━━━━━━━━━\nAI BUSINESS AUDIT\n━━━━━━━━━━━━━━━━━━━━━━\n\n{{12.result}}\n━━━━━━━━━━━━━━━━━━━━━\n\nAudit Status: Completed\n\nSubmitted: {{10.submitted_at}}\n\nSOLVIA SYSTEMS\nWe solve what slows your business down.",
+                        "image": {}
+                    }
+                ]
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "cc": {
+                            "mode": "chose"
+                        },
+                        "to": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        },
+                        "bcc": {
+                            "mode": "chose"
+                        },
+                        "from": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "bodyType": {
+                            "label": "Collection of contents (text, images, etc.)"
+                        },
+                        "contents": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        },
+                        "signature": {
+                            "mode": "chose"
+                        },
+                        "attachments": {
+                            "mode": "chose"
+                        },
+                        "emailHeaders": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-email"
+                            },
+                            "label": "Molesh's Gmail connection (YOUR_EMAIL@example.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-email",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "to",
+                        "spec": {
+                            "name": "value",
+                            "type": "email",
+                            "label": "Recipient email address",
+                            "required": true,
+                            "validate": true
+                        },
+                        "type": "array",
+                        "label": "To",
+                        "required": true
+                    },
+                    {
+                        "name": "subject",
+                        "type": "text",
+                        "label": "Subject"
+                    },
+                    {
+                        "name": "bodyType",
+                        "type": "select",
+                        "label": "Body type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "rawHtml",
+                                "collection"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "attachments",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "filename",
+                                    "type": "filename",
+                                    "label": "File name",
+                                    "required": true,
+                                    "semantic": "file:name"
+                                },
+                                {
+                                    "name": "data",
+                                    "type": "buffer",
+                                    "label": "Data",
+                                    "required": true,
+                                    "semantic": "file:data"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Attachment"
+                        },
+                        "type": "array",
+                        "label": "Attachments"
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "From"
+                    },
+                    {
+                        "name": "cc",
+                        "spec": {
+                            "name": "value",
+                            "type": "email",
+                            "label": "Recipient email address"
+                        },
+                        "type": "array",
+                        "label": "CC recipients"
+                    },
+                    {
+                        "name": "bcc",
+                        "spec": {
+                            "name": "value",
+                            "type": "email",
+                            "label": "Recipient email address"
+                        },
+                        "type": "array",
+                        "label": "BCC recipients"
+                    },
+                    {
+                        "name": "emailHeaders",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "key",
+                                    "type": "text",
+                                    "label": "Key",
+                                    "required": true
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Value"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Email header"
+                        },
+                        "type": "array",
+                        "label": "Additional email headers"
+                    },
+                    {
+                        "name": "contents",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "text",
+                                    "type": "text",
+                                    "label": "Text"
+                                },
+                                {
+                                    "name": "image",
+                                    "spec": [
+                                        {
+                                            "name": "filename",
+                                            "type": "filename",
+                                            "label": "File name",
+                                            "semantic": "file:name"
+                                        },
+                                        {
+                                            "name": "data",
+                                            "type": "buffer",
+                                            "label": "Data",
+                                            "semantic": "file:data"
+                                        },
+                                        {
+                                            "name": "width",
+                                            "type": "uinteger",
+                                            "label": "Width"
+                                        },
+                                        {
+                                            "name": "height",
+                                            "type": "uinteger",
+                                            "label": "Height"
+                                        }
+                                    ],
+                                    "type": "collection",
+                                    "label": "Image"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Content"
+                        },
+                        "type": "array",
+                        "label": "Body contents"
+                    },
+                    {
+                        "name": "signature",
+                        "type": "select",
+                        "label": "Signature content"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": []
+    }
+}
